@@ -41,13 +41,17 @@ fi
 
 # get current public IP
 PUBLICIP=$(curl -s ifconfig.co)
-echo "LASTPUBLICIP=$PUBLICIP" >> $CONFIGFILE
+if [[ -z $LASTPUBLICIP ]]; then
+  echo "LASTPUBLICIP=$PUBLICIP" >> $CONFIGFILE
+fi
+
 
 # update DNS
 if [[ $LASTPUBLICIP != $PUBLICIP ]]; then
-   curl -s -X PUT "https://api.cloudflare.com/client/v4/zones/$ZONEID/dns_records/$DNSID" \
+   curl -s -o /dev/null -X PUT "https://api.cloudflare.com/client/v4/zones/$ZONEID/dns_records/$DNSID" \
      -H "X-Auth-Email: $AUTHEMAIL" \
      -H "X-Auth-Key: $AUTHKEY" \
      -H "Content-Type: application/json" \
      --data '{"type":"A","name":"'"$DNSENTRY"'","content":"'"$PUBLICIP"'"}'
+   sed -i 's/LASTPUBLICIP.*/LASTPUBLICIP='$PUBLICIP'/' $CONFIGFILE
 fi
