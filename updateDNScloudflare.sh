@@ -1,7 +1,7 @@
 #!/bin/bash
 
 SCRIPTPATH=$(dirname $(realpath "$0"))
-CONFIGFILE=$SCRIPTPATH/${0}.config
+CONFIGFILE=$SCRIPTPATH/$(basename $0).config
 
 # variables needed in $CONFIGFILE
 # AUTHKEY=xxxxxxxxxxxxxxxxxxxxxxx
