@@ -20,7 +20,7 @@ fi
 
 # debug logging
 function f_logging () {
-  if [[ DEBUG != "0" ]]; then
+  if [[ DEBUG != 0 ]]; then
     DATE=`date '+%Y-%m-%d_%H.%M.%S'`
     echo $DATE $* >> $DEBUGLOGFILE 2>> $DEBUGLOGFILE
   fi
@@ -29,7 +29,7 @@ function f_logging () {
 # send debug by email
 # after sending, debug log will be emptied!
 function f_mail () {
-  if [[ SENDDEBUG != "0" ]]; then
+  if [[ SENDDEBUG != 0 ]]; then
     cat $DEBUGLOGFILE | mail -s "[${HOSTNAME}] $(basename $0) debug log" $AUTHEMAIL
     echo > $DEBUGLOGFILE
     exit 0
