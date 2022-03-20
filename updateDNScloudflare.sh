@@ -4,7 +4,7 @@ SCRIPTPATH=$(dirname $(realpath "$0"))
 CONFIGFILE=$SCRIPTPATH/$(basename $0).config
 DEBUGLOGFILE=$SCRIPTPATH/$(basename $0).log
 DEBUG=1
-SENDDEBUG=1
+SENDDEBUG=0
 
 # variables needed in $CONFIGFILE
 # AUTHKEY=xxxxxxxxxxxxxxxxxxxxxxx
