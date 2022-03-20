@@ -80,8 +80,9 @@ f_logging "before getting PUBLICIP"
 f_logging "PUBLICIP=$PUBLICIP"
 f_logging "LASTPUBLICIP=$LASTPUBLICIP"
 PUBLICIP=$(curl -s ifconfig.co)
-if [[ ! -z $LASTPUBLICIP ]]; then
+if [[ -z $LASTPUBLICIP ]]; then
   echo "LASTPUBLICIP=$PUBLICIP" >> $CONFIGFILE
+  f_logging "updating $CONFIGFILE with LASTPUBLICIP=$PUBLICIP"
 fi
 f_logging "after getting PUBLICIP"
 f_logging "PUBLICIP=$PUBLICIP"
