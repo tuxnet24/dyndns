@@ -3,10 +3,20 @@
 SCRIPTPATH=$(dirname $(realpath "$0"))
 CONFIGFILE=$SCRIPTPATH/$(basename $0).config
 DEBUGLOGFILE=$SCRIPTPATH/$(basename $0).log
-EMAIL=dasganze@gmail.com
 DEBUG=1
 SENDDEBUG=1
 
+# variables needed in $CONFIGFILE
+# AUTHKEY=xxxxxxxxxxxxxxxxxxxxxxx
+# DNSENTRY=fq.dn.de
+# AUTHEMAIL=xx@yy.ZZ
+# make this config file writeable for the user who is running this script
+if [[ -f $CONFIGFILE ]]; then
+  . $CONFIGFILE
+else
+  echo "ERROR: $CONFIGFILE not found!"
+  exit 1
+fi
 
 # debug logging
 function f_logging () {
@@ -20,23 +30,13 @@ function f_logging () {
 # after sending, debug log will be emptied!
 function f_mail () {
   if [[ SENDDEBUG != "0" ]]; then
-    cat $DEBUGLOGFILE | mail -s "[${HOSTNAME}] $(basename $0) debug log" $EMAIL
+    cat $DEBUGLOGFILE | mail -s "[${HOSTNAME}] $(basename $0) debug log" $AUTHEMAIL
     echo > $DEBUGLOGFILE
     exit 0
   fi
 }
 
-# variables needed in $CONFIGFILE
-# AUTHKEY=xxxxxxxxxxxxxxxxxxxxxxx
-# DNSENTRY=fq.dn.de
-# AUTHEMAIL=xx@yy.ZZ
-# make this config file writeable for the user who is running this script
-if [[ -f $CONFIGFILE ]]; then
-  . $CONFIGFILE
-else
-  echo "ERROR: $CONFIGFILE not found!"
-  exit 1
-fi
+
 
 f_logging "CONFIGFILE=$CONFIGFILE"
 f_logging "$(env)"
