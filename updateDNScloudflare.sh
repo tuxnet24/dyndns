@@ -2,6 +2,29 @@
 
 SCRIPTPATH=$(dirname $(realpath "$0"))
 CONFIGFILE=$SCRIPTPATH/$(basename $0).config
+DEBUGLOGFILE=$SCRIPTPATH/$(basename $0).log
+EMAIL=dasganze@gmail.com
+DEBUG=1
+SENDDEBUG=1
+
+
+# debug logging
+function f_logging () {
+  if [[ DEBUG != "0" ]]; then
+    DATE=`date '+%Y-%m-%d_%H.%M.%S'`
+    echo $DATE $* >> $DEBUGLOGFILE 2>> $DEBUGLOGFILE
+  fi
+}
+
+# send debug by email
+# after sending, debug log will be emptied!
+function f_mail () {
+  if [[ SENDDEBUG != "0" ]]; then
+    cat $DEBUGLOGFILE | mail -s "[${HOSTNAME}] $(basename $0) debug log" $EMAIL
+    echo > $DEBUGLOGFILE
+    exit 0
+  fi
+}
 
 # variables needed in $CONFIGFILE
 # AUTHKEY=xxxxxxxxxxxxxxxxxxxxxxx
@@ -14,6 +37,9 @@ else
   echo "ERROR: $CONFIGFILE not found!"
   exit 1
 fi
+
+f_logging "CONFIGFILE=$CONFIGFILE"
+f_logging "$(env)"
 
 DOMAIN=$(echo $DNSENTRY | awk -F. '{i=NF-1;print $i"."$NF}')
 
@@ -55,3 +81,5 @@ if [[ $LASTPUBLICIP != $PUBLICIP ]]; then
      --data '{"type":"A","name":"'"$DNSENTRY"'","content":"'"$PUBLICIP"'"}'
    sed -i 's/LASTPUBLICIP.*/LASTPUBLICIP='$PUBLICIP'/' $CONFIGFILE
 fi
+
+f_mail
