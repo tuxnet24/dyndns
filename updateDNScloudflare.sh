@@ -36,16 +36,19 @@ function f_mail () {
   fi
 }
 
-
-
 f_logging "CONFIGFILE=$CONFIGFILE"
-f_logging "$(env)"
+f_logging "AUTHKEY=$AUTHKEY"
+f_logging "DNSENTRY=$DNSENTRY"
+f_logging "AUTHEMAIL=$AUTHEMAIL"
 
 DOMAIN=$(echo $DNSENTRY | awk -F. '{i=NF-1;print $i"."$NF}')
+f_logging "DOMAIN=$DOMAIN"
 
 ## main
 
 # get zone ID
+f_logging "before getting ZONEID"
+f_logging "ZONEID=$ZONEID"
 if [[ -z $ZONEID ]]; then
   ZONEID=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones" \
       -H "X-Auth-Email: $AUTHEMAIL" \
@@ -54,8 +57,12 @@ if [[ -z $ZONEID ]]; then
 
   echo "ZONEID=$ZONEID" >> $CONFIGFILE
 fi
+f_logging "after getting ZONEID"
+f_logging "ZONEID=$ZONEID"
 
 # get DNS record ID
+f_logging "before getting DNSID"
+f_logging "DNSID=$DNSID"
 if [[ -z $DNSID ]]; then
   DNSID=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones/$ZONEID/dns_records?type=A&name=$DNSENTRY" \
        -H "X-Auth-Email: $AUTHEMAIL" \
@@ -64,12 +71,21 @@ if [[ -z $DNSID ]]; then
 
   echo "DNSID=$DNSID" >> $CONFIGFILE
 fi
+f_logging "after getting DNSID"
+f_logging "DNSID=$DNSID"
+
 
 # get current public IP
+f_logging "before getting PUBLICIP"
+f_logging "PUBLICIP=$PUBLICIP"
+f_logging "LASTPUBLICIP=$LASTPUBLICIP"
 PUBLICIP=$(curl -s ifconfig.co)
-if [[ -z $LASTPUBLICIP ]]; then
+if [[ ! -z $LASTPUBLICIP ]]; then
   echo "LASTPUBLICIP=$PUBLICIP" >> $CONFIGFILE
 fi
+f_logging "after getting PUBLICIP"
+f_logging "PUBLICIP=$PUBLICIP"
+f_logging "LASTPUBLICIP=$LASTPUBLICIP"
 
 
 # update DNS
