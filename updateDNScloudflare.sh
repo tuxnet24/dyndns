@@ -65,8 +65,7 @@ f_logging "before getting DNSID"
 f_logging "DNSID=$DNSID"
 if [[ -z $DNSID ]]; then
   DNSID=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones/$ZONEID/dns_records?type=A&name=$DNSENTRY" \
-       -H "X-Auth-Email: $AUTHEMAIL" \
-       -H "X-Auth-Key: $AUTHKEY" \
+       -H "Authorization: Bearer $AUTHKEY"
        -H "Content-Type: application/json" | jq -r '.result[] | .id')
 
   echo "DNSID=$DNSID" >> $CONFIGFILE
@@ -92,8 +91,7 @@ f_logging "LASTPUBLICIP=$LASTPUBLICIP"
 # update DNS
 if [[ $LASTPUBLICIP != $PUBLICIP ]]; then
    curl -s -o /dev/null -X PUT "https://api.cloudflare.com/client/v4/zones/$ZONEID/dns_records/$DNSID" \
-     -H "X-Auth-Email: $AUTHEMAIL" \
-     -H "X-Auth-Key: $AUTHKEY" \
+     -H "Authorization: Bearer $AUTHKEY"
      -H "Content-Type: application/json" \
      --data '{"type":"A","name":"'"$DNSENTRY"'","content":"'"$PUBLICIP"'"}'
    sed -i 's/LASTPUBLICIP.*/LASTPUBLICIP='$PUBLICIP'/' $CONFIGFILE
