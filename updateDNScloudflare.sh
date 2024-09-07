@@ -79,7 +79,7 @@ f_logging "DNSID=$DNSID"
 f_logging "before getting PUBLICIP"
 f_logging "PUBLICIP=$PUBLICIP"
 f_logging "LASTPUBLICIP=$LASTPUBLICIP"
-PUBLICIP=$(curl -s ifconfig.co)
+PUBLICIP=$(dig +short myip.opendns.com @resolver1.opendns.com)
 if [[ -z $LASTPUBLICIP ]]; then
   echo "LASTPUBLICIP=$PUBLICIP" >> $CONFIGFILE
   f_logging "updating $CONFIGFILE with LASTPUBLICIP=$PUBLICIP"
