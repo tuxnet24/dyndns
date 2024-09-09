@@ -51,8 +51,7 @@ f_logging "before getting ZONEID"
 f_logging "ZONEID=$ZONEID"
 if [[ -z $ZONEID ]]; then
   ZONEID=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones" \
-      -H "X-Auth-Email: $AUTHEMAIL" \
-      -H "X-Auth-Key: $AUTHKEY" \
+      -H "Authorization: Bearer $AUTHKEY" \
       -H "Content-Type: application/json" | jq -r --arg DOMAIN "$DOMAIN" '.result[] | select(.name==($DOMAIN)) | .id')
 
   echo "ZONEID=$ZONEID" >> $CONFIGFILE
