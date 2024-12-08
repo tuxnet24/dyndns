@@ -45,7 +45,7 @@ The variable $cwd is determined at runtime and is the absolute path to the progr
 ```bash
 cfg[logfile]="${cwd}/log/dyndns.log"
 cfg[cloudflare_apiurl]="https://api.cloudflare.com/client/v4"
-cfg[cloudflare_token]="<verschlüsseltes Token>"
+cfg[cloudflare_token]="<Encrypted token>"
 cfg[dyndns_domain]="example.com"
 cfg[notify_recipient]="admin@example.com"
 cfg[notify_onsuccess]="Yes"
