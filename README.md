@@ -94,8 +94,8 @@ Examples:
 
 In the long run, you should consider including this file in the OS log rotation or change the path to the global log directory to have it automatically rotated by the OS.
 
-- **Logdatei** `log/dyndns.log`
-- **Letzte IP-Adresse** `log/lastipaddr.dat`
+- **Log file** `log/dyndns.log`
+- **Last IP address** `log/lastipaddr.dat`
 
 ## Error notification
 
