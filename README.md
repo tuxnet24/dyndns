@@ -123,7 +123,11 @@ The program consists of several modular scripts.
 - Make sure that the TTL of the DNS entries is set to a maximum of 300 seconds (5 minutes) to ensure prompt updates.
 - If necessary, change the encryption key `CRYPTOKEY` in `lib/Bootstrap.inc.sh` and encrypt the token again.
 
+## Additional
+
+I have built a Debian package from the script. The Debian/Ubuntu repository can be found at [https://deb.tuxnet24.de/](https://deb.tuxnet24.de/).
+
+## 
 ## Author
 
-**Marko Schulz**
-[info@tuxnet24.de](mailto:info@tuxnet24.de)
+**Marko Schulz** <[info@tuxnet24.de](mailto:info@tuxnet24.de)>
