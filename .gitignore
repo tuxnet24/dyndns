@@ -1,1 +1,4 @@
-updateDNScloudflare.sh.config
+log/*.log
+log/*.dat
+!log/.gitkeep
+!.gitignore
